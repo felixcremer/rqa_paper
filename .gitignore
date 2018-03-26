@@ -7,3 +7,6 @@
 !/latex/*.bib
 !/latex/figs/
 .directory
+
+*.ipynb_checkpoints/
+
