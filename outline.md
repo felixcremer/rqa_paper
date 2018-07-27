@@ -1,4 +1,6 @@
 # Introduction
+Describe why we do land use mapping
+new possibilities with hypertemporal Sentinel-1 data
 
 # Method
    describe Recurrence Plots
@@ -7,6 +9,8 @@
 ## 
 
 # Results
+Description of study area
+Description of the preprocessing
    compare RQA metrics histograms 
 # Discussion
 

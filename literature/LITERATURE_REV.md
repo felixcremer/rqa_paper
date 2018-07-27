@@ -6,6 +6,31 @@ that have been analysed with rqa and with that to understand the strength and we
 
 
 ## Results
+
+### Marwan_2013
+Add a confidence measure to the detected variations
+Detect significant change in dynamical systems such as
+change in control parameters or chaos order and chaos-chaos transitions
+Using bootstrapping to gain confidence levels
+Looking at DET and LAM explicitly
+Compute the RQA measure on a moving window to study time-dependent behaviour.
+with a window size w and a step size s with overlap
+They have the null hypothesis H_0:
+The dynamics of the system X does not change over time
+so the recurrence structure does not change, therefore the RQA measure M has
+a certain distribution which is around some mean μ(M) and variance σ(M)
+
+The idea is to assume a certain distribution for M
+and check if it's pushed out of its normal range
+
+Bootstrap the variance of M via moving windows
+This works only under the assumption that the RQA measure is stable over time?
+We get this by drawing B times from the local measures
+Using a constant recurrence rate to detect the threshold.
+Interpolate time series to equal sampling
+
+
+
 Books I want to check:
 Recurrence Quantification Analysis: Theory and Best practices
 https://link.springer.com/book/10.1007/978-3-319-07155-8
