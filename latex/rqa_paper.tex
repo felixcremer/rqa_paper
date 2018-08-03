@@ -72,18 +72,27 @@ Email: felix.cremer@uni-jena.de}
 %
 \end{abstract}
 \section{Introduction}
+With the launch of the Sentinel-1 A (April 2014) and Sentinel-1 B (April 2016) Satellites of the European Space Agency (ESA) there is an unprecedented number of C-Band SAR acquisitions available. 
+The combination of Sentinel-1 A and Sentinel-1 B result in time series with a repetition rate of 6 days under the same acquisition conditions 
+and up to daily repetitions with the combination of all available acquisition over one region of interest. 
+Describe why we do land use mapping
+To further use these datasets, one can do feature selection via the computation of multitemporal metrics for every pixel. 
+
 
 \section{Method}
 
+Recurrence plots have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series. They are a quadratic matrix which entries are defined as follows:
+$R_{i,j} = θ(ϵ - \abs{x_i - x_j}, i,j = 1,...,N$
  
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
+\color{red}{
 The proposed method was tested on a stack of 53 Sentinel-1 GRD images of the same relative orbit collected over Central Germany (close to Erfurt)
 at flat terrain (mean slope $\ang{3.44} \pm \ang{3.38}$) between October 2014 and July 2018.
 The time span between the acquisitions was 12 days for most of the images.
 Exceptions include a gap of 48 days at the beginning of the time series and eight gaps of 24 days.
 Figure \ref{study_area} shows one image of the temporal stack.
-
+}
 \color{red}{
 The data have been preprocessed using the SNAP software \cite{SNAP}.
 The single time steps are multilooked to a \SI{10}{\m} x \SI{10}{\m} pixel spacing.
@@ -93,7 +102,6 @@ All images were coregistered in the DEM geometry after geocoding to achieve a su
 }
 
 
-%\todo{Reicht ein Vergleichsbild f_r meine ganze Zeitserie? Nein!}
  
 \subsection{Separability analysis}
 
