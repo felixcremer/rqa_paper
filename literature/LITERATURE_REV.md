@@ -38,7 +38,7 @@ Recurrence Plots and their Quantifications: Expanding Horizons
 https://link.springer.com/book/10.1007/978-3-319-29922-8
 
 ## Recurrence Plots in Remote Sensing
-<<<<<<< HEAD
+
 Li_2010
 
 ### Marwan_2015
@@ -49,7 +49,7 @@ The find different recurrence plot appearances in Spain compared to Brasil.
 They explain these differences with the different vegetatin dynamics in subhumid and semiarid climate.
 Why are they combining multiple pixels into one recurrence plot?
 What happens when we do this?
-=======
+
 How are recurrence plots used in remote sensing and especially on SAR data?
 
 ### Li_2010
@@ -106,4 +106,3 @@ Do we know that Sentinel-1 time series are non-linear and non-stationary?
 How can I conclude this?
 How can I describe the Sentinel-1 time series data?
 What is Luyapunov exponents, Kolmogorov entropy, correlation dimension, approximate entropy, sample entropy, permutation entropy?
->>>>>>> 7d8dbebf8646961a2f348f425ddee12b08767963
