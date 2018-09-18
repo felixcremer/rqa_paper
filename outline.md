@@ -1,32 +1,24 @@
 # Introduction
-Describe why we do land use mapping
-
-new possibilities with hypertemporal Sentinel-1 data
-
+ describe other methods to derive multitemporal metrics from SAR data
+ What was already tried?
+ Why is this not working?
+ Or at least should this not work?
+hypothesize why the order of the time series should matter.
 # Method
    describe Recurrence Plots
 
    describe Recurrence Quantification Metrics
 
    describe "normal" multitemporal metrics
- 
+## Figures
+   Recurrence Plot
+
 
 # Results
+   compare RQA metrics histograms to normal metrics
 
-Description of study area
-
-Description of the preprocessing
-
-compare RQA metrics histograms to normal metrics
-
-Discuss which metrics can distinguish between which LULC classes
-
-I want to use Kullback-Leibler Divergence for this to quantify the differences in the histograms between the LULC classes for different metrics
+   discuss which metrics can distinguish between which LULC classes
+## Figures
 
 # Discussion
-
-Discuss how this information may be used for different applications (e.g. classification)
-
-# Outlook
-
-
+   Discuss how this information may be used

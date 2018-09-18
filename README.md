@@ -23,3 +23,6 @@ Einige Klassen profitieren nicht davon
 Wir brauchen Klassen, die davon profitieren
 Soweit in den Klassifizierungsbaum eindringen wie nötig.
 "Grundstock rausfeuern"
+
+Soll ich nur einen relativen Orbit nehmen, oder sollte ich auch untersuchen, inwiefern man verschiedene Orbits mischen kann?
+Ich nehme erstmal nur einen Orbit, ansonsten fällt mir das doch nur wieder auf die Füsse.
