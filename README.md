@@ -24,5 +24,11 @@ Wir brauchen Klassen, die davon profitieren
 Soweit in den Klassifizierungsbaum eindringen wie nötig.
 "Grundstock rausfeuern"
 
-Soll ich nur einen relativen Orbit nehmen, oder sollte ich auch untersuchen, inwiefern man verschiedene Orbits mischen kann?
+Soll ich nur einen relativen https://www.geoportal-th.de/de-de/Downloadbereiche/Download-Offene-Geodaten-Th%C3%BCringen/Download-ATKIS-Basis-DLM
+Orbit nehmen, oder sollte ich auch untersuchen, inwiefern man verschiedene Orbits mischen kann?
 Ich nehme erstmal nur einen Orbit, ansonsten fällt mir das doch nur wieder auf die Füsse.
+
+
+## Data for the metric comparison
+I downloaded the atkis data for thuringia from
+https://www.geoportal-th.de/de-de/Downloadbereiche/Download-Offene-Geodaten-Th%C3%BCringen/Download-ATKIS-Basis-DLM
