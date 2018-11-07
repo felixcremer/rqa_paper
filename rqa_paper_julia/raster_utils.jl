@@ -1,6 +1,7 @@
 using GDAL
 using ArchGDAL; AG=ArchGDAL
-using DataArrays
+#using DataArrays
+using Dates
 
 function readasarray(inputpath::String)
     println("Start")
@@ -9,7 +10,7 @@ function readasarray(inputpath::String)
             #@show ds
             bands = ArchGDAL.nraster(ds)
             #@show bands
-            data = Array{Float64}(ArchGDAL.width(ds),ArchGDAL.height(ds), bands)
+            data = Array{Float64}(undef, ArchGDAL.width(ds),ArchGDAL.height(ds), bands)
             ArchGDAL.rasterio!(ds, data,collect(Int32,1:bands))        end
     end
 end
@@ -60,8 +61,8 @@ function getbandnames(dataset)
     #@show meta
     meta_split = map(x->split(x, "="),meta)
     #by_func = x -> parse(Int,replace(match(r"_\d",x[1]).match,"_",""))
-    filter!(x->ismatch(r"^Band",x[1]),meta_split)
-    by_func =  x-> parse(Int, replace(match(r"_(?<number>\d+)",x[1])[:number], "_",""))
+    filter!(x->occursin(r"^Band",x[1]),meta_split)
+    by_func =  x-> parse(Int, replace(match(r"_(?<number>\d+)", x[1])[:number], "_" => ""))
 
     sort!(meta_split, by = by_func)
     map(x->x[2],meta_split)
@@ -91,7 +92,6 @@ getname(band) = getbandnames(AG.getdataset(band))[AG.getnumber(band)]
         end
     end
 end"""
-
 function getdates(input::Array{T} where T<:AbstractString,reg = r"[0-9]{8}", df = dateformat"yyyymmdd")
 
             dates = map(x->Date(match(reg, x).match,df), input)
