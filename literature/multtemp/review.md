@@ -67,3 +67,17 @@ uses long term coherence and temporal variability using standard deviation
 They use these features as input for a neural net, but I didn't look at that.
 They don't show the histogram of std, the histogram of long term coherence indicates a lala separability of urban areas and no other separability.
 Every other land cover class decoherenced with a long enough baseline.
+
+
+# Park 2008
+Use average backscatter intensity, temporal variability and long time coherence
+as well as principal component analysis
+using 9 radarsat-1 scenes ascending  HH and 11 envisat asar scenes descending VV
+envisat is one year, radarsat is april to october 2005
+Good separability of water and urban areas using the mean *they say* from the boxplot I only see good separability of water to all other classes on the radarsat mean
+
+
+# Summary
+The hard part is distinguishing between forest, agriculture ( includes paddy and dry fields),
+but it is easier to distinguish between water and rest and urban and rest. 
+So I should focus on the separability between agriculture and forest.
