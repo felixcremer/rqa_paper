@@ -21,6 +21,49 @@ we have 6 features and we are looking at 8 reference classes namely:
 - industrial buildings
 - Dense urban multistory buildings
 
-They make a water mask using a certain hand picked tandem pairs with calm and windy conditions, this works only when we have different wind conditions and when the water bodies are high enough to be affected by wind.
+
+They aggregate the residential areas and the industrial buildings into a mixed urban class.
+At least 100 reference points per class
+The reference points are detected using high resolution aerial images and the national forest inventory.
+They make a water mask using certain hand picked tandem pairs with calm and windy conditions, this works only when we have different wind conditions and when the water bodies are large enough to be affected by wind.
 They do this because otherwise the water body differences would be the main factor in the principal component of the coherence time series.
 no seperabiltiy between open fields and the forest classes with mean intensity, longtime coherence, and tandem coherence pc2, hardly any seperability of dense forest and sparse forest
+Very large boxes for the Urban classes espacially in the mean backscatter intensity. *This is explainable by looking direction i think, mean backscatter in urban areas is mostly driven by double bounce and this is influenced by the direction of the walls.*
+Very similar intensity pc1 for every class except fields.
+
+*So this study showed, that using backscatter intensity with non-ordered metrics, we can distinguish between field and everything else with PCT and between Dense urban areas and everything else by the mean backscatter.
+This is not surprising, because in dense urban areas we have a high amount of double bounce. This study shows, that we should have a look into insar coherence time series but this is something i want to investigate in another paper. I Should talk with Clemence about that.*
+
+# De Grandi 2004
+Not interesting for our study
+
+# Yan 2017
+
+Use 50 Images from Sentinel1 from March 8 2015 till august 18 2017
+They use pca and ica spatially (I think) so this is also not relevant for this study.
+
+# Santoro 2012
+They show that the combination of minimum backscatter and mva mean annual variability (measure devoloped by Quegan) is suitable to detect constant water bodies with a straight forward thresholding approach.
+From Figure 2 it is visible that the combination of min and mva is needed to distinguish water from artificial surfaces because mva is not enough and it is hard to make a clear threshold for water vs cropland in both metrics.
+*Maybe i should also look into the combinated seperability using two metrics*
+
+# Thiel 2009
+Histogram analysis of multi-temporal statistics derived from 13 ERS and ENVISAT acquisitions in VV and 14 Enivsat HH HV scenes
+They use the metrics, minimum, maximum mean, and mean annual variation (mva)
+and look at Forest, Settlement, Grassland and Agriculture
+
+## Results
+High separability of water to anything else in VV MVA and VV min, hv mean, hv max, hh min, hh mva,
+weak separability of grassland in vv max
+high separability of grassland in hv max
+separability of agriculture in hv mva
+differentiation of forest and grassland is possible in mean, max and min of all three polarisations
+No separability of forest and settlement with these multi-temporal metrics
+
+
+# Bruzzone 2004
+uses 8 ERS scenes
+uses long term coherence and temporal variability using standard deviation
+They use these features as input for a neural net, but I didn't look at that.
+They don't show the histogram of std, the histogram of long term coherence indicates a lala separability of urban areas and no other separability.
+Every other land cover class decoherenced with a long enough baseline.
