@@ -79,5 +79,5 @@ Good separability of water and urban areas using the mean *they say* from the bo
 
 # Summary
 The hard part is distinguishing between forest, agriculture ( includes paddy and dry fields),
-but it is easier to distinguish between water and rest and urban and rest. 
+but it is easier to distinguish between water and rest and urban and rest.
 So I should focus on the separability between agriculture and forest.
