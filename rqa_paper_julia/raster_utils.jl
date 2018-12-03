@@ -32,7 +32,7 @@ end
 
 function remove_na(arr, na_value=-99)
     arr_re = reshape(arr, :,size(arr)[3])
-    ind_re = mapslices(x->all(y->y!=na_value,x), arr_re, [2])
+    ind_re = mapslices(x->all(y->y!=na_value,x), arr_re, dims=[2])
     arr_re_small = arr_re[find(ind_re),:]
 end
 
