@@ -1,4 +1,4 @@
-\documentclass[journal]{IEEEtran}
+\documentclass{article}
 
 \usepackage[pdftex]{graphicx}
 \usepackage{siunitx}
@@ -54,14 +54,14 @@
 %\usepackage{url}
 %\usepackage{amstext}
 
-\bibliographystyle{IEEEtran}
+%\bibliographystyle{IEEEtran}
 
 % Title Page
 \title{Recurrence Quantification Analysis for Sentinel-1 time series of land surfaces}
-\author{\IEEEauthorblockN{Felix Cremer, Mikhail Urbazaev, Christiane Schmullius and Christian Thiel}
+\author{Felix Cremer, Mikhail Urbazaev, Christiane Schmullius and Christian Thiel}
 
-\IEEEauthorblockA{Chair of Earth Observation, Friedrich-Schiller University, Jena,Germany\\
-Email: felix.cremer@uni-jena.de}
+%\IEEEauthorblockA{Chair of Earth Observation, Friedrich-Schiller University, Jena,Germany\\
+%Email: felix.cremer@uni-jena.de}
 
 \begin{document}
 \maketitle
@@ -74,15 +74,16 @@ Email: felix.cremer@uni-jena.de}
 \section{Introduction}
 With the launch of the Sentinel-1 A (April 2014) and Sentinel-1 B (April 2016) Satellites of the European Space Agency (ESA) there is an unprecedented number of C-Band SAR acquisitions available.
 The combination of Sentinel-1 A and Sentinel-1 B result in time series with a repetition rate of 6 days under the same acquisition conditions
-and up to daily repetitions with the combination of all available acquisition over one region of interest.
+and up to daily repetitions with the combination of all available acquisitions over one region of interest.
 Describe why we do land use mapping
 To further use these datasets, one can do feature selection via the computation of multitemporal metrics for every pixel.
+
 
 
 \section{Method}
 
 Recurrence plots have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series. They are a quadratic matrix which entries are defined as follows:
-$R_{i,j} = θ(ϵ - \abs{x_i - x_j}, i,j = 1,...,N$
+$$R_{i,j} = \Theta(\epsilon - \lvert x_i - x_j \rvert), i,j = 1,...,N$$
 
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
@@ -117,9 +118,7 @@ All images were coregistered in the DEM geometry after geocoding to achieve a su
 This work was funded by the DLR in the Sentinel4REDD project (FKZ:50EE1540).
 This work uses Copernicus Sentinel data 2014-2018.
 
-\ifCLASSOPTIONcaptionsoff
-  \newpage
-\fi
+
 
 \bibliography{literatur}
 
