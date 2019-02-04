@@ -81,3 +81,23 @@ Good separability of water and urban areas using the mean *they say* from the bo
 The hard part is distinguishing between forest, agriculture ( includes paddy and dry fields),
 but it is easier to distinguish between water and rest and urban and rest.
 So I should focus on the separability between agriculture and forest.
+
+# Write up
+I found 9 papers from 2003 till 2017 which used multitemporal SAR data in combination with multitemporal metrics.
+From these papers seven do something comparable to the study we want to do. 
+They used all "normal" multitemporal metrics and also two papers used Principal component analysis. 
+All of these studies use only non-order relatind metrics except for mean annual variance which is slightly using the ordering of the data.
+The most important studies are Thiel 2009 and Engdahl 2003.
+All of these studies show, that it is possible to distinguish between stable water areas and any other class with the use of multitemporal mean and mean annual variance. 
+And that we can distinguish between urban areas and everything else with the use of multitemporal mean.
+The most important distingtion that is not yet solved with non-ordered multitemporal metrics is between agricultural fields and forestry, and of course if we could do that between certain crop types. 
+Two papers also investigated the use of coherence with differing temporal baselines. 
+
+From this literature review I distill the following research questions:
+Can we attain a higher seperability between agricultural fields and forest and between different crop types and different forest types with the use of RQA on SAR time series?
+Can we use a combination of different multitemporal metrics to further enhance the separability of certain land cover types?
+
+Further questions:
+Should we include land cover change classes into our analysis? 
+These could be found by the use of ordered metrics like RQA.
+What could be candidates for such classes?
