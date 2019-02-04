@@ -24,7 +24,7 @@ function rec_stats(rec_mat, pixel, output, j,i, funcs)
 end
 
 function rec_stats(rec_mat, pixel, output, i, funcs)
-    rec_mat = recurrencematrix(pixel, 0.03, lmin=3)
+    rec_mat = RecurrenceMatrix(pixel, 0.03)
     rqas = rqa(rec_mat)
     for (index, func) in enumerate(funcs)
         output[i, index]=rqas[string(func)]
@@ -44,11 +44,11 @@ end
 
 
 function spatial_rec(arr::Array{T,3} where T<:Number)
-    funcs = ["RR", "DET", "L", "Lmax", "DIV", "ENT",
+    funcs = ["RR", "DET", "L", "Lmax", "DIV", "ENTR",
                 "TND", "LAM", "TT", "Vmax"]
     rr_arr = zeros(eltype(arr), (size(arr,1,2)...,length(funcs)))
     #det_arr = zeros(arr[:,:,1])
-    rec_mat = recurrencematrix(arr[1,1,:],0.1, lmin=3)
+    rec_mat = RecurrenceMatrix(arr[1,1,:],0.1, lmin=3)
     for i∈1:size(arr,2)
         for j∈1:size(arr,1)
             rec_stats(rec_mat,filter(!isnan, arr[j,i,:]),rr_arr,j,i, funcs)
@@ -60,11 +60,11 @@ function spatial_rec(arr::Array{T,3} where T<:Number)
 end
 
 function spatial_rec(arr::Array{T,2} where T<:Number)
-    funcs = ["RR", "DET", "L", "Lmax", "DIV", "ENT",
-                "TND", "LAM", "TT", "Vmax"]
+    funcs = ["RR", "DET", "L", "Lmax", "DIV", "ENTR",
+                "TREND", "LAM", "TT", "Vmax"]
     rr_arr = zeros(eltype(arr), (size(arr,1)...,length(funcs)))
     #det_arr = zeros(arr[:,:,1])
-    rec_mat = recurrencematrix(arr[1,1,:],0.00001)
+    rec_mat = RecurrenceMatrix(arr[1,1,:],0.00001)
     for j∈1:size(arr,1)
         rec_stats(rec_mat,arr[j,:],rr_arr,j, funcs)
     end
