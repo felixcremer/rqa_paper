@@ -32,8 +32,8 @@ end
 
 function remove_na(arr, na_value=-99)
     arr_re = reshape(arr, :,size(arr)[3])
-    ind_re = dropdims(mapslices(x->all(y->y==na_value,x), arr_re, dims=[2]),dims=2)
-    return arr_re[ind_re,:]
+    ind_re = dropdims(mapslices(x->all(x.==na_value), arr_re, dims=[2]),dims=2)
+    return arr_re[.!ind_re,:]
 end
 
 function getdates(inputpath)
