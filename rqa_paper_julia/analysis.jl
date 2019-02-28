@@ -1,5 +1,6 @@
 using Revise
 using Pkg
+using Statistics
 #Pkg.activate("rqa_paper_julia")
 includet("raster_utils.jl")
 includet("recurrencequant.jl")
@@ -50,6 +51,13 @@ crop_list = lastsplit.(basename.(refstacks), "_")
 metapath = joinpath(datdir, "S1_tile_1_timestack_VH_A___lin")
 #arrs_2017_VH_A_ref = map(x->prep_data(x, metapath, Date(2017,1,1),Date(2017,12,31)), refstacks)
 
-plot!(gdates, [laubmed, laubimfs...], layout=(3,2))
-laubimfs = ceemd(laubmed, dint, num_imfs=4)
+
+tmedian(x)  = dropdims(mapslices(median, x, dims=[1]), dims=1)
+medians = tmedian.(prep_data.(refstacks))
+nul(x) = x .==0
+b = nul.(medians)[3]
+dates = getdates(metapath)
+gdates = dates[.!b]
+goodmedians = getindex.(medians, Ref(.!b))
 d = gdates .- gdates[1]
+dint = getfield.(d, :value)
