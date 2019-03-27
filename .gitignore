@@ -5,8 +5,9 @@
 *~
 !/latex/*.tex
 !/latex/*.bib
-!/latex/figs/
+!/latex/figs
 .directory
 
 *.ipynb_checkpoints/
+rqa_paper_julia/Manifest.toml
 
