@@ -72,23 +72,22 @@
 %
 \end{abstract}
 \section{Introduction}
-With the launch of the Sentinel-1 A (April 2014) and Sentinel-1 B (April 2016) Satellites of the European Space Agency (ESA) there is an unprecedented number of C-Band SAR acquisitions available.
-The combination of Sentinel-1 A and Sentinel-1 B result in time series with a repetition rate of 6 days under the same acquisition conditions
-and up to daily repetitions with the combination of all available acquisitions over one region of interest.
 
-To further use these datasets, one can do feature selection via the computation of multitemporal metrics for every pixel.
-Describe why we do land use mapping
 
 
 \section{Method}
 
 Recurrence plots have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series. They are a quadratic matrix which entries are defined as follows:
 $$R_{i,j} = \Theta(\epsilon - \lvert x_i - x_j \rvert), i,j = 1,...,N$$
-Figure \ref{rplots} shows an example Recurrence plot of different land cover types.
+Figure \ref{rplots} shows an example Recurrence plot of stable forest and a deforested area.
+
 
 
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
+We test the separability of stable forest and deforestation on two testsites in Mexico.
+One is mostly covered by temperate forests in central Mexico,
+the other is situated on the Yucatan peninsula and is covered by tropical dry forests.
 
 \color{red}{
 The data have been preprocessed using the SNAP software \cite{SNAP}.
