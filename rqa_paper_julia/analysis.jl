@@ -1,16 +1,16 @@
-using Revise
-using Pkg
+#using Revise
+#using Pkg
 using Statistics
 #Pkg.activate("rqa_paper_julia")
-includet("raster_utils.jl")
-includet("recurrencequant.jl")
+#includet("raster_utils.jl")
+#includet("recurrencequant.jl")
 
 import StatsBase.quantile
 
 using Dates
 
 function prep_data(path, orb::String)
-    arr = readasarray(path)
+    arr,geoinfo = readasarray(path, "all")
     bandnames = getbandnames(path)
     orbits = getorbits(bandnames)
     indices = find(x->x==orb,orbits)
@@ -19,9 +19,8 @@ function prep_data(path, orb::String)
     arr_small, indices
 end
 
-
 function prep_data(path, metapath, startdate::Date, enddate::Date)
-    arr = readasarray(path)
+    arr, geoinfo = readasarray(path, "all")
     #@show size(arr)
     bandnames = getbandnames(metapath)
     dates = getdates(bandnames)
@@ -33,7 +32,7 @@ function prep_data(path, metapath, startdate::Date, enddate::Date)
 end
 
 function prep_data(path)
-    arr = readasarray(path)
+    arr, geoinfo = readasarray(path, "all")
     #@show typeof(arr)
     remove_na(arr)
 end
