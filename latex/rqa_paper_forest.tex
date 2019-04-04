@@ -67,17 +67,35 @@
 \maketitle
 %\tableofcontents
 \begin{abstract}
+  Forest ecosystems
+  REDD+ process
+  ordere of time series
+  SAR
 
 %Keywords:Recurrence, SAR, time series, remote sensing
 %
 \end{abstract}
 \section{Introduction}
-With the launch of the Sentinel-1 A (April 2014) and Sentinel-1 B (April 2016) Satellites of the European Space Agency (ESA) there is an unprecedented number of C-Band SAR acquisitions available.
-The combination of Sentinel-1 A and Sentinel-1 B result in time series with a repetition rate of 6 days under the same acquisition conditions
-and up to daily repetitions with the combination of all available acquisitions over one region of interest.
-
-To further use these datasets, one can do feature selection via the computation of multitemporal metrics for every pixel.
-Describe why we do land use mapping
+The tropical forest ecosystems stabilise the world climate\cite{}, the protection of the biodiversity \cite{} and
+for the well being of a vast amount of the global popu-
+lation\cite{}.
+ In the last decade remote sensing technologies have
+played a substantial role in the consistent, reliable and timely
+information gathering about forest cover changes. With the
+REDD+ mechanism the use of remote sensing to monitor
+and map deforestation and degradation processes has been
+increased. Forest/Non-Forest maps are mostly operationally if
+they are based on optical sensors. Especially in the tropics,
+the optical imaging is hindered by clouds. In this study we
+compare two forest mapping approaches based on SAR time
+series. The first is based on multitemporal metrics (e.g., mean,
+standard deviation and different percentiles of the backscatter
+for different time periods). The second is based on the different
+seasonalities of land cover classes. For this, the time series
+of every pixel is decomposed into subsignals with differing
+temporal frequencies. From these subsignals different statistics
+are calculated that are then used to distinguish between forest
+and non-forest with a supervised machine learning approach.
 
 
 \section{Method}
@@ -102,9 +120,12 @@ All images were coregistered in the DEM geometry after geocoding to achieve a su
 
 \subsection{Separability analysis}
 
+Show that the TREND metric is enhancing the separability of deforested areas and stable forests.
+Quantify it.
 
 \section{Discussion}
 
+Do I need to do a comparison against optical deforestation maps?
 
 \section{Summary and Conclusion}
 
