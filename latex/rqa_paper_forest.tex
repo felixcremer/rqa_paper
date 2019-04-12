@@ -87,28 +87,49 @@ and map deforestation and degradation processes has been
 increased. Forest/Non-Forest maps are mostly operationally if
 they are based on optical sensors. Especially in the tropics,
 the optical imaging is hindered by clouds. In this study we
-compare two forest mapping approaches based on SAR time
-series. The first is based on multitemporal metrics (e.g., mean,
-standard deviation and different percentiles of the backscatter
-for different time periods). The second is based on the different
-seasonalities of land cover classes. For this, the time series
-of every pixel is decomposed into subsignals with differing
-temporal frequencies. From these subsignals different statistics
-are calculated that are then used to distinguish between forest
-and non-forest with a supervised machine learning approach.
-
+we propose a deforestation mapping approach based on SAR time
+series.
 
 \section{Method}
 
-Recurrence plots have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series. They are a quadratic matrix which entries are defined as follows:
-$$R_{i,j} = \Theta(\epsilon - \lvert x_i - x_j \rvert), i,j = 1,...,N$$
-Figure \ref{rplots} shows an example Recurrence plot of stable forest and a deforested area.
+\subsection{Recurrence Plots}
 
-\begin{\begin{figure}
-  \includegraphics{figs/rpplot.png}
-  \caption{Recurrence Plots for single pixel with stable forest and a deforested area.}
+
+Recurrence plots (RP) have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series.
+They are defined as follows:
+$$R_{i,j} = \theta(\epsilon - \lvert x_i - x_j \rvert), i,j = 1,...,N$$
+hereby $\epsilon$ is a threshold value which indicates up to which distance two time steps are viewed as similar.
+$\theta$ is the Heaviside function which sets everything below zero to zero and every positive value to one.
+N is the number of time steps.
+This leads to a quadratic matrix with black dots where the time steps are similar to each other and white dots where they are distinct.
+The main diagonal is always black, because every time step is similar to itself.
+It is a nonlinear data analysis tool.
+Figure \ref{rplots} shows example Recurrence plots of a sum of two sine waves with different frequencies,
+a step function from three to zero with an overlaid white noise with standard deviation 1 and third a sine wave with overlaying trend.
+For the composition of two different frequencies we can see a regular pattern with distinguished diagonals which are indicating the frequency.
+In the noisy step function we see four distinct quadrants in the recurence plot.
+In the two quadrants near the main diagonal every point is randomly similar to other points in this part of the time series with a high probability.
+In the other two quadrants, the probability is low, that two points are similar to a point in the other part of the step function.
+In the third example, we see a clear pattern, but these patterns are fading out to the edge of the recurrence plot.
+This is due to the difference of the values at the beginning and the end of the time series.
+Therefore we can use this pattern as an indicator for a trend in the time series.
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/rp_methods.png}
+  \caption{Recurrence Plots for a sine wave, a step function with noise, and a sine wave with trend.}
   \label{rplots}
-\end{figure}}
+\end{figure}
+
+These visual patterns can be quantified using recurrence quantification analysis (RQA)\cite{Zbilut}.
+The simplest measure is the recurrence rate (RR) which is the number of recurrences in a recurrence plot devided by the squared number of time steps.
+It measures the density of the recurrence points in a RP.
+Another measure is the trend.
+It is defined as
+$$ TREND= \frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}.$$
+It is a linear regression coefficient over the recurrence rate of the diagonals in comparison to their distance to the main diagonal.
+It indicates if the process is drifting.
+For an overview of RQA measures see \cite{Marwan06}.
+
 
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
@@ -127,6 +148,15 @@ All images were coregistered in the DEM geometry after geocoding to achieve a su
 
 
 \subsection{Separability analysis}
+
+Figure \ref{rpforest} shows the recurrence plots of examplary forest and deforestation pixels.
+We see
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/rpplots.png}
+  \caption{Recurrence Plots for a sine wave, a step function with noise, and a sine wave with trend.}
+  \label{rpforest}
+\end{figure}
+
 
 Show that the TREND metric is enhancing the separability of deforested areas and stable forests.
 Quantify it.
