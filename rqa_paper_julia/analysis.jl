@@ -1,11 +1,10 @@
-using Revise
+#using Revise
 using Pkg
 using Statistics
 #Pkg.activate("rqa_paper_julia")
-includet("raster_utils.jl")
-includet("recurrencequant.jl")
+include("raster_utils.jl")
+#include("recurrencequant.jl")
 
-import StatsBase.quantile
 
 using Dates
 
@@ -41,23 +40,29 @@ end
 rmext(path) = splitext(path)[1]
 stackpaths(dir) = map(x->joinpath(dir,x), rmext.(filter(x-> occursin(".hdr", x), readdir(dir))))
 
+tmedian(x)  = dropdims(mapslices(median, x, dims=[1]), dims=1)
+nul(x) = x .==0
+lastsplit(str, dlm) = String(split(str, dlm)[end])
+
+#=
 datdir = "/media/data/rqa_paper/"
-plotsdir = joinpath(datdir, "plots")
+datdir = "/home/crem_fe/Daten/rqa_paper/"
+plotsdir = joinpath(datdir, "fields")
 refstacks = stackpaths(plotsdir)
 
-lastsplit(str, dlm) = String(split(str, dlm)[end])
+
 crop_list = lastsplit.(basename.(refstacks), "_")
 
 metapath = joinpath(datdir, "S1_tile_1_timestack_VH_A___lin")
 #arrs_2017_VH_A_ref = map(x->prep_data(x, metapath, Date(2017,1,1),Date(2017,12,31)), refstacks)
 
 
-tmedian(x)  = dropdims(mapslices(median, x, dims=[1]), dims=1)
+
 medians = tmedian.(prep_data.(refstacks))
-nul(x) = x .==0
 b = nul.(medians)[3]
 dates = getdates(metapath)
 gdates = dates[.!b]
 goodmedians = getindex.(medians, Ref(.!b))
 d = gdates .- gdates[1]
 dint = getfield.(d, :value)
+=#
