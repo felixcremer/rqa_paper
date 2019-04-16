@@ -86,6 +86,7 @@ they are based on optical sensors. Especially in the tropics,
 the optical imaging is hindered by clouds. In this study we
  propose a deforestation mapping approach based on SAR time
 series.
+
 \section{Method}
 
 \subsection{Recurrence Plots}
@@ -125,6 +126,7 @@ $$ TREND= \frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle 
 It is a linear regression coefficient over the recurrence rate of the diagonals in comparison to their distance to the main diagonal.
 It indicates if the process is drifting.
 For an overview of RQA measures see \cite{Marwan06}.
+All of the results have been produced using the Julia RecurrenceAnalysis.jl package\cite{RQA.jl}.
 
 
 \section{Experimental Results}
@@ -132,34 +134,62 @@ For an overview of RQA measures see \cite{Marwan06}.
 We test the separability of stable forest and deforestation on two testsites in Mexico.
 One is mostly covered by temperate forests in central Mexico,
 the other is situated on the Yucatan peninsula and is covered by tropical dry forests.
+Figure \ref{testsites} show very high resolution Pléiades data of the two testsites.
 
-\color{red}{
-The data have been preprocessed using the SNAP software \cite{SNAP}.
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/SEN4REDD_testsites.png}
+  \caption{The testsites are located in Mexico and are dominated by temperate forests (Hidalgo) and tropical dry forest(Kiuic).}
+  \label{testsites}
+\end{figure}
+
+The data have been preprocessed using the SNAP software \cite{SNAP} in version 6.
 The single time steps are multilooked to a \SI{10}{\m} x \SI{10}{\m} pixel spacing.
 The orthorectification is based on the original orbit state vectors and the \SI{30}{\m} SRTM digital elevation model\cite{SRTM}.
 The preprocessing also included radiometric terrain flattening after \cite{Small} which results in $\gamma^0$ backscatter values.
 All images were coregistered in the DEM geometry after geocoding to achieve a subpixel coregistration precision which is of eminent importance when the pixels are investigated in the temporal domain only.
-}
+
 
 
 
 \subsection{Separability analysis}
 
-Figure \ref{rpforest} shows the recurrence plots of examplary forest and deforestation pixels.
-We see
+Figure \ref{rpforest} shows the recurrence plots of a neighbourhood of examplary forest and deforestation areas.
+The upper figures shows the time series of a 3x3 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
+The bottom figures show the grayscale of the corresponding recurrence plots.
+Black points are similar in every pixel of the neighborhood and white points in none.
+
+
 \begin{figure}
-  \includegraphics[width=\textwidth]{figs/rpplots.png}
-  \caption{Recurrence Plots for a sine wave, a step function with noise, and a sine wave with trend.}
+  \includegraphics[width=\textwidth]{figs/S1_Hidalgo_timestack_20km_VH___lin_20_test_tandemdem12_emd__rp_deffor_3.png}
+  \caption{Recurrence Plots for a 3x3 matrix of deforestated(left) and stable forest(right) pixels.
+           The gray lines in the above figure are all pixels and the colored line is the mean of these pixels.}
   \label{rpforest}
+\end{figure}
+
+Figure \ref{trend} shows the RQA TREND statistic from two year VH data from october 2016 till october 2018.
+The red polygons are deforestation areas and the green are stable forest areas.
+Most of the deforested areas are clearly distinguishable as a distinct black area compared to the surrounding grey.
+The not detected deforestation areas are too late in the sensing period.
+So that the backscatter change due to the deforestation did not have a long enough effect on the TREND statistic.
+
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/TREND_Hidalgo_2016.png}
+  \caption{RQA TREND statistic.  The red polygons are deforested areas and the green polygons are stable forest areas.
+  These polygons have been select from yearly VHR Pleiades data.}
+  \label{trend}
 \end{figure}
 
 
 Show that the TREND metric is enhancing the separability of deforested areas and stable forests.
 Quantify it.
+Should I try to make a RP for VV and VH in the same step?
 
 \section{Discussion}
 
 Do I need to do a comparison against optical deforestation maps?
+
+Should I show the deforested area in the testsite figure?
 
 \section{Summary and Conclusion}
 
