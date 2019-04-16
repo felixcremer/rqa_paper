@@ -15,7 +15,7 @@ include("raster_utils.jl")
 
 
 function rec_stats(rec_mat, pixel, output, j,i, funcs)
-    rec_mat = recurrencematrix(pixel, 0.01)
+    rec_mat = RecurrenceMatrix(pixel, 0.01)
     rqas = rqa(rec_mat)
     for (index, func) in enumerate(funcs)
         output[j,i, index]=rqas[func]
@@ -46,9 +46,9 @@ end
 function spatial_rec(arr::Array{T,3} where T<:Number)
     funcs = ["RR", "DET", "L", "Lmax", "DIV", "ENTR",
                 "TND", "LAM", "TT", "Vmax"]
-    rr_arr = zeros(eltype(arr), (size(arr,1,2)...,length(funcs)))
+    rr_arr = zeros(eltype(arr), (size(arr)[1:2]...,length(funcs)))
     #det_arr = zeros(arr[:,:,1])
-    rec_mat = RecurrenceMatrix(arr[1,1,:],0.1, lmin=3)
+    rec_mat = RecurrenceMatrix(arr[1,1,:],0.1)
     for i∈1:size(arr,2)
         for j∈1:size(arr,1)
             rec_stats(rec_mat,filter(!isnan, arr[j,i,:]),rr_arr,j,i, funcs)
