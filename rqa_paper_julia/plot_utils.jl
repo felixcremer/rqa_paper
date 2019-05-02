@@ -1,7 +1,11 @@
-using PyPlot
+#using PyPlot
 using RecurrenceAnalysis
 using Distributions
 using Glob
+
+const sendir = "/home/qe89hep/Daten/sen4redd/"
+const s1dir = sendir * "S-1"
+
 
 dB(x) = 10 * log10(x)
 dB(x::AbstractArray) = 10 .* log10.(x)
@@ -35,9 +39,8 @@ end
 
 include("raster_utils.jl")
 
+
 function set_paths(testsite)
-    sendir = "/home/qe89hep/Daten/sen4redd/"
-    s1dir = sendir * "S-1"
     s1paths = glob("*" * testsite * "*12", s1dir)
     append!(s1paths, glob("*" * testsite * "*emd_", s1dir))
     s1paths
@@ -106,7 +109,7 @@ function plot_ts_rp(dates, ts1, ts2, eps1=1, eps2=1)
 end
 
 function pixelize(arr, nodata=-99)
-    pixels = []
+    pixels = Vector{eltype(arr)}[]
     for i in 1:size(arr, 1)
        for j in 1:size(arr, 2)
            pix = arr[i,j,:]
@@ -116,4 +119,22 @@ function pixelize(arr, nodata=-99)
        end
     end
     pixels
+end
+
+
+function histcomp()
+    s1plots = s1dir * "/plots"
+    testsite = "Hidalgo"
+    defpaths = glob("*tandemdem12_$(testsite)*change*[0-9]", s1plots)
+    forpaths = glob("*tandemdem12_$(testsite)*forest*[0-9]", s1plots)
+    defpixels = pixelize.(readasarray.(defpaths))
+    defpix = collect(Base.Iterators.flatten(defpixels))
+    forpixels = pixelize.(readasarray.(forpaths))
+    forpix = collect(Base.Iterators.flatten(forpixels))
+    forpix, defpix
+end
+
+function make_hist(forpix, defpix, fun)
+    histogram(fun.(dB.(defpix)), title="Function $(fun)", label="Deforestation $(size(defpix))",color="red", bins=50)
+    histogram!(fun.(dB.(forpix)), label="Stable Forest $(size(forpix))", opacity=0.5, color="green", bins=50)
 end
