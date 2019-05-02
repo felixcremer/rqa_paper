@@ -3,7 +3,8 @@ using ArchGDAL; AG=ArchGDAL
 #using DataArrays
 using Dates
 
-function readasarray(inputpath::String)
+
+function readasarray(inputpath::String, indices)
     println("Start")
     ArchGDAL.registerdrivers() do
         ArchGDAL.read(inputpath) do ds
@@ -11,11 +12,18 @@ function readasarray(inputpath::String)
             bands = ArchGDAL.nraster(ds)
             #@show bands
             data = Array{Float64}(undef, ArchGDAL.width(ds),ArchGDAL.height(ds), bands)
-            ArchGDAL.rasterio!(ds, data,collect(Int32,1:bands))        end
+            geotransform = AG.getgeotransform(ds)
+            proj = AG.getproj(ds)
+            if indices == "all"
+                indices = 1:bands
+            end
+            ArchGDAL.rasterio!(ds, data,collect(Int32,indices)), (proj=proj,trans=geotransform)
+
+        end
     end
 end
 
-function writearray(outpath::String, output::Array{Float64}, drivername="ENVI")
+function writearray(outpath::String, output::Array{Float64}, geoinfo, drivername="ENVI")
     ArchGDAL.registerdrivers() do
     	driver = ArchGDAL.getdriver(drivername)
     	#print(driver)wr
@@ -23,7 +31,9 @@ function writearray(outpath::String, output::Array{Float64}, drivername="ENVI")
     	#println(rows)
     	#println(cols)
     	#println(bands)
-    	ds = ArchGDAL.unsafe_create(outpath, driver, width=cols, height=rows, nbands=bands,dtype=Float64, options=[] )
+    	ds = ArchGDAL.unsafe_create(outpath, driver, width=rows, height=cols, nbands=bands,dtype=Float64, options=[] )
+        AG.setgeotransform!(ds, geoinfo[:trans])
+        AG.setproj!(ds, geoinfo[:proj])
     	ArchGDAL.rasterio!(ds, output, collect(Int32, 1:bands), GDAL.GF_Write)
     	#ArchGDAL.close(ds)
     	GDAL.close(ds.ptr)

@@ -18,7 +18,6 @@ function prep_data(path, orb::String)
     arr_small, indices
 end
 
-
 function prep_data(path, metapath, startdate::Date, enddate::Date)
     arr = readasarray(path)
     #@show size(arr)
