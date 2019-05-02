@@ -37,6 +37,8 @@ function prep_data(path)
     remove_na(arr)
 end
 
+
+
 rmext(path) = splitext(path)[1]
 stackpaths(dir) = map(x->joinpath(dir,x), rmext.(filter(x-> occursin(".hdr", x), readdir(dir))))
 
