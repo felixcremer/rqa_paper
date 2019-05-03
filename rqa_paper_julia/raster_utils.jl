@@ -4,7 +4,7 @@ using ArchGDAL; AG=ArchGDAL
 using Dates
 
 
-function readasarray(inputpath::String, indices)
+function readasarray(inputpath::String)
     println("Start")
     ArchGDAL.registerdrivers() do
         ArchGDAL.read(inputpath) do ds
@@ -14,10 +14,7 @@ function readasarray(inputpath::String, indices)
             data = Array{Float64}(undef, ArchGDAL.width(ds),ArchGDAL.height(ds), bands)
             geotransform = AG.getgeotransform(ds)
             proj = AG.getproj(ds)
-            if indices == "all"
-                indices = 1:bands
-            end
-            ArchGDAL.rasterio!(ds, data,collect(Int32,indices)), (proj=proj,trans=geotransform)
+            ArchGDAL.rasterio!(ds, data,collect(Int32,1:bands)), (proj=proj,trans=geotransform)
 
         end
     end
