@@ -95,9 +95,9 @@ end
 function spatial_rec(path::String, ϵ, low_value=-99., up_value=Inf; startdate=Date(2014, 10,1), enddate=Date(2100,1,1))
     outpath = splitext(path)[1] * "rec_$(replace(string(ϵ), "." => "_"))_dist"
     @show outpath
-    arr = readasarray(path)
+    arr, geoinfo = readasarray(path)
     arr[arr .<= low_value] .= NaN
     arr[arr .>= up_value] .= NaN
     metrics = spatial_rec(dB.(arr), ϵ)
-    writearray(outpath, metrics)
+    writearray(outpath, metrics, geoinfo)
 end
