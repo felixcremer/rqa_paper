@@ -69,6 +69,10 @@ function spatial_rec(arr::Array{T,2} where T<:Number, ϵ=0.1)
     rr_arr
 end
 
+function spatialtrend(arr::AbstractArray{T,3} where T<:Number, ϵ=0.1)
+    mapslices(x -> pixeltrend(x, ϵ), arr, dims=3)
+end
+
 #@time rec_out = spatial_rec(arr)
 #recurrencerate(s1_rec)
 #writearray(path*"recurrence_stats", rec_out, "ENVI")
