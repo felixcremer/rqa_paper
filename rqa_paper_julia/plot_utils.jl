@@ -1,6 +1,5 @@
 #using PyPlot
 using RecurrenceAnalysis
-using Distributions
 using Glob
 
 const sendir = "/home/qe89hep/Daten/sen4redd/"
@@ -60,6 +59,20 @@ function plotrp_hidalgo(kernel)
     end
 end
 
+function plotrp_kiuic(kernel)
+    kiuicpaths= set_paths("Kiuic")
+    def_center = [770 , 892]
+    for_center = [793, 900]
+
+    for path in kiuicpaths
+        arr, _ = readasarray(path)
+        pixel_def = pixelize(arr[def_center[1]-kernel:def_center[1]+kernel, def_center[2]-kernel:def_center[2]+kernel, :])
+        pixel_for = pixelize(arr[for_center[1]-kernel:for_center[1]+kernel, for_center[2]-kernel:for_center[2]+kernel, :])
+        plot_ts_rp_many(dB.(pixel_def), dB.(pixel_for))
+        savefig(joinpath("latex/figs/", basename(path) * "_rp_deffor_$(kernel).png"))
+    end
+end
+
 function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1)
     figure(figsize=(12,8))
     m1 = mean(ts1)
@@ -73,7 +86,7 @@ function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1)
     rp1 = sum(grayscale.(rp1s))
     @show size(rp1)
     subplot2grid((3,2), (1,0), rowspan=2)
-    imshow(rp1, cmap="binary_r")
+    PyPlot.imshow(rp1, cmap="binary_r")
 
 
     subplot2grid((3,2), (0,1))
@@ -86,7 +99,7 @@ function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1)
     rp2 = sum(grayscale.(rp2s))
     @show size(rp2)
     subplot2grid((3,2), (1,1), rowspan=2)
-    imshow(rp2, cmap="binary_r")
+    PyPlot.imshow(rp2, cmap="binary_r")
 end
 
 function plot_ts_rp(dates, ts1, ts2, eps1=1, eps2=1)
