@@ -80,19 +80,21 @@ lation\cite{}.
 played a substantial role in the consistent, reliable and timely
 information gathering about forest cover changes. With the
 REDD+ mechanism the use of remote sensing to monitor
-and map deforestation and degradation processes has been
-increased. Forest/Non-Forest maps are mostly operationally if
+and map deforestation and degradation processes increased.
+Forest/Non-Forest maps are mostly operationally if
 they are based on optical sensors. Especially in the tropics,
 the optical imaging is hindered by clouds. In this study we
  propose a deforestation mapping approach based on SAR time
 series.
 
+Misses overview about established methods.
+Especially the percentile range
+
 \section{Method}
 
 \subsection{Recurrence Plots}
 
-
-Recurrence plots (RP) have been proposed by Eckmann et al 1987. They are method to visualize the recurrences of a time series.
+Recurrence plots (RP) have been proposed by Eckmann et al 1987. They are a method to visualize the recurrences of a time series.
 They are defined as follows:
 $$R_{i,j} = \theta(\epsilon - \lvert x_i - x_j \rvert), i,j = 1,...,N$$
 hereby $\epsilon$ is a threshold value which indicates up to which distance two time steps are viewed as similar.
@@ -125,7 +127,7 @@ It is defined as
 $$ TREND= \frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}.$$
 It is a linear regression coefficient over the recurrence rate of the diagonals in comparison to their distance to the main diagonal.
 It indicates if the process is drifting.
-For an overview of RQA measures see \cite{Marwan06}.
+For an overview of RQA measures see  \ref{RQA_table} and for an in depth discussion \cite{Marwan06}.
 All of the results have been produced using the Julia RecurrenceAnalysis.jl package\cite{RQA.jl}.
 
 
@@ -154,7 +156,7 @@ All images were coregistered in the DEM geometry after geocoding to achieve a su
 \subsection{Separability analysis}
 
 Figure \ref{rpforest} shows the recurrence plots of a neighbourhood of examplary forest and deforestation areas.
-The upper figures shows the time series of a 3x3 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
+The upper figures shows the time series of a 7x7 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
 The bottom figures show the grayscale of the corresponding recurrence plots.
 Black points are similar in every pixel of the neighborhood and white points in none.
 
@@ -166,38 +168,48 @@ Black points are similar in every pixel of the neighborhood and white points in 
   \label{rpforest}
 \end{figure}
 
-Figure \ref{trend} shows the RQA TREND statistic from two year VH data from october 2016 till october 2018.
-The red polygons are deforestation areas and the green are stable forest areas.
+Figure \ref{trend} shows the RQA TREND statistic from two year VH data from march 2017 till march 2019.
+For this time frame are 187 time steps available.
+The red polygons are deforestations which happened between october 2017 and july 2018 and the green are stable forest areas.
 Most of the deforested areas are clearly distinguishable as a distinct black area compared to the surrounding grey.
 The not detected deforestation areas are too late in the sensing period.
 So that the backscatter change due to the deforestation did not have a long enough effect on the TREND statistic.
 
 
+
 \begin{figure}
   \includegraphics[width=\textwidth]{figs/TREND_Hidalgo_2016.png}
-  \caption{RQA TREND statistic.  The red polygons are deforested areas and the green polygons are stable forest areas.
-  These polygons have been select from yearly VHR Pleiades data.}
+  \caption{RQA TREND statistic.  The red polygons are deforestations between October 2017 and July 2018 and the green polygons are stable forest areas.
+  These polygons have been select from VHR Pleiades data.}
   \label{trend}
 \end{figure}
 
 
+Figure \ref{hist} shows the histograms for the RQA trend metric and the percentile range for the deforestation areas in red and the stable forest areas in green.
+
 Show that the TREND metric is enhancing the separability of deforested areas and stable forests.
 Quantify it.
-Should I try to make a RP for VV and VH in the same step?
+
+
+Is there a recommendation, which threshold we should use for the percentile range?
 
 \section{Discussion}
 
 Do I need to do a comparison against optical deforestation maps?
+Will do a comparison against the percentile range.
 
 Should I show the deforested area in the testsite figure?
-
+Yes please. If I am showing the testsite figure at all.
 \section{Summary and Conclusion}
+In this paper we showed, that the use of the inherent order of a time series conveys information,
+which can be used to better map deforestation.
 
 
 
 \section*{Acknowledgment}
-This work was funded by the DLR in the Sentinel4REDD project (FKZ:50EE1540).
-This work uses Copernicus Sentinel data 2014-2018.
+This work was funded by the DLR in the Sentinel4REDD project (FKZ:50EE1540) and
+the DFG project HyperSense.
+This work uses Copernicus Sentinel data 2017-2019.
 
 
 
