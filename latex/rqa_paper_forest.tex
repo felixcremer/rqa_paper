@@ -21,7 +21,8 @@
 % http://www.ctan.org/pkg/cite
 % The documentation is contained in the cite.sty file itself.
 
-
+\usepackage{booktabs}
+\usepackage{lscape}
 
 % *** MATH PACKAGES ***
 %
@@ -50,6 +51,7 @@
 %\usepackage{subcaption}
 %\usepackage{url}
 %\usepackage{amstext}
+% \usepackage{booktabs}
 
 %\bibliographystyle{IEEEtran}
 
@@ -127,9 +129,34 @@ It is defined as
 $$ TREND= \frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}.$$
 It is a linear regression coefficient over the recurrence rate of the diagonals in comparison to their distance to the main diagonal.
 It indicates if the process is drifting.
-For an overview of RQA measures see  \ref{RQA_table} and for an in depth discussion \cite{Marwan06}.
+For an overview of RQA measures see  Table \ref{RQA_table} and for an in depth discussion \cite{Marwan06}.
 All of the results have been produced using the Julia RecurrenceAnalysis.jl package\cite{RQA.jl}.
-
+%\begin{landscape}
+\renewcommand{\arraystretch}{2}
+\begin{table}[]
+\begin{tabular}{@{}lcc@{}}
+\toprule
+ Name & Formula & Interpretation \\
+ \midrule
+ Recurrence Rate & $ RR= \frac{\sum\limits_{i,j=1}^N(R_{i,j})}{N^2} $ &  \\
+ Determinism & $DET=\frac{\sum\limits_{l=lmin}^N(l P(l))}{\sum_{l=1}(l P(l))} $ &  \\
+ Average Length of Diagonal Structues & $dlavg=\frac{\sum_{l=lmin}(l P(l))}{\sum_{l=lmin}^{N}(P(l))}$  &  \\
+ Maximum Length of Diagonal Structures & $L_{max}=\max(l_i)$ &  \\
+ Divergence & $DIV=\frac{1}{L_{max}}$ &  \\
+ Entropy of diagonal structures & $ENTR=\sum\limits_{i=1}^N P(l_i) * log(P(l_i))$ &  \\
+ Trend & $ TREND=\frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}$ &  \\
+ Laminarity & $LAM=\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=1}^{N}(v P(v))}$ &  \\
+ Trapping time & $TT=\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=vmin}^{N}(P(v))}$ &  \\
+ Maximum Length of vertical structures & $V_{max}=\max\limits_{i=1, ..., N}(v_i)$ &  \\
+ Entropy of vertical structures& $VENTR=\sum\limits_{i=1}^N P(v_i) * log(P(v_i))$ &  \\
+ Mean recurrence time & $MRT=\frac{\sum\limits_{i=1}^N(w_i P(w_i))}{\sum_{1}^{N}(P(w_i))}$  &  \\
+ Recurrence time entropy & $RTE =\sum\limits_{i=1}^N P(w_i) * log(P(w_i))$  & \\
+ Number of the most probable recurrence times & $NMPRT=\max w_i$ & \\ \bottomrule
+\end{tabular}
+\caption{Overview of Recurrence Quantification measures.}
+\label{RQA_table}
+\end{table}
+%\end{landscape}
 
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
