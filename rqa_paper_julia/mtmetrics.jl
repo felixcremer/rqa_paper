@@ -63,6 +63,15 @@ function nanmva(x)
     mva(lin.(ts))
 end
 
+function nanpercrange(x)
+  ts = filter(!isnan, x)
+  if size(ts,1) == 0
+    return NaN
+  end
+  perc05, perc95 = quantile(ts, [0.05, 0.95])
+  return perc95 - perc05
+end
+
 lin(x) = exp10(x/10)
 dB(x) = 10 * log10(x)
 
@@ -83,7 +92,7 @@ function getmetrics(path::String, low_value=-99., up_value=Inf; startdate=Date(2
     @show dates
     ind = startdate .<= dates .< enddate
     @show size(ind)
-    arr, geoinfo = readasarray(path, ind)
+    arr, geoinfo = readasarray(path)
     @show size(arr)
     arr[arr .<= low_value] .= NaN
     arr[arr .>= up_value] .=NaN
@@ -98,6 +107,7 @@ function spatial_rec(path::String, ϵ, low_value=-99., up_value=Inf; startdate=D
     arr, geoinfo = readasarray(path)
     arr[arr .<= low_value] .= NaN
     arr[arr .>= up_value] .= NaN
-    metrics = spatial_rec(dB.(arr), ϵ)
+    arr .=dB.(arr)
+    metrics = spatial_rec(arr, ϵ)
     writearray(outpath, metrics, geoinfo)
 end

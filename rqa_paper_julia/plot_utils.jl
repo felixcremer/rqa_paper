@@ -7,7 +7,9 @@ const s1dir = sendir * "S-1"
 
 
 dB(x) = 10 * log10(x)
-dB(x::AbstractArray) = 10 .* log10.(x)
+dB(x::AbstractArray) = dB.(x)
+dBnan(x) = x<0 ? -Inf : dB(x)
+dBnan(x::AbstractArray) = dBnan.(x)
 
 function plot_ts_rp_methods()
     x = range(0,100,length=10000)
@@ -73,13 +75,17 @@ function plotrp_kiuic(kernel)
     end
 end
 
-function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1)
+function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1;vertlines=[])
     figure(figsize=(12,8))
     m1 = mean(ts1)
     @show size(m1)
     subplot2grid((3,2), (0,0))
     PyPlot.plot.(ts1, color="grey")
     PyPlot.plot(m1, color="red")
+    for l in vertlines
+    	PyPlot.axvline(x=l[1], color="orange", label=l[2])
+	PyPlot.text(l[1], 0, l[2], rotation=90)
+    end
     rp1s = RecurrenceMatrix.(ts1, Ref(eps1))
     @show typeof(rp1s)
     #@show typeof(grayscale.(rp1s))
@@ -93,6 +99,10 @@ function plot_ts_rp_many(ts1, ts2, eps1=1, eps2=1)
     m2 = mean(ts2)
     PyPlot.plot.(ts2, color="grey")
     PyPlot.plot(m2, color="green")
+    for l in vertlines
+    	PyPlot.axvline(x=l[1], color="orange",label=l[2])
+	PyPlot.text(l[1], 0, l[2], rotation=90)
+    end
     rp2s = RecurrenceMatrix.(ts2, Ref(eps2))
     @show typeof(rp2s)
     #@show typeof(grayscale.(rp1s))
@@ -140,14 +150,56 @@ function histcomp()
     testsite = "Hidalgo"
     defpaths = glob("*tandemdem12_$(testsite)*change*[0-9]", s1plots)
     forpaths = glob("*tandemdem12_$(testsite)*forest*[0-9]", s1plots)
-    defpixels = pixelize.(readasarray.(defpaths))
+    @show defpaths
+    arrs = getindex.(readasarray.(defpaths), Ref(1))
+    @show arrs[1]
+    defpixels = pixelize.(arrs)
     defpix = collect(Base.Iterators.flatten(defpixels))
-    forpixels = pixelize.(readasarray.(forpaths))
+    forpixels = pixelize.(getindex.(readasarray.(forpaths),Ref(1)))
     forpix = collect(Base.Iterators.flatten(forpixels))
     forpix, defpix
 end
 
+function histcomp(testsite, dir, buff="_", emd="", pol="VH")
+    defpaths = glob("*"*pol*"*tandemdem12_$(emd)$(testsite)*change$(buff)[0-9]", dir)
+    forpaths = glob("*"*pol*"*tandemdem12_$(emd)$(testsite)*forest$(buff)[0-9]", dir)
+    @show defpaths
+    arrs = getindex.(readasarray.(defpaths), Ref(1))
+    @show arrs[1]
+    defpixels = pixelize.(arrs)
+    defpix = collect(Base.Iterators.flatten(defpixels))
+    forpixels = pixelize.(getindex.(readasarray.(forpaths),Ref(1)))
+    forpix = collect(Base.Iterators.flatten(forpixels))
+    forpix, defpix
+end
+
+
 function make_hist(forpix, defpix, fun)
-    histogram(fun.(dB.(defpix)), title="Function $(fun)", label="Deforestation $(size(defpix))",color="red", bins=50)
-    histogram!(fun.(dB.(forpix)), label="Stable Forest $(size(forpix))", opacity=0.5, color="green", bins=50)
+    histogram(fun.(dBnan.(defpix)), title="Function $(fun)", label="Deforestation $(size(defpix))",color="red", bins=50)
+    histogram!(fun.(dBnan.(forpix)), label="Stable Forest $(size(forpix))", opacity=0.5, color="green", bins=50)
+end
+
+function hist_fig(dir = "/home/crem_fe/Daten/fields")
+	forpix_vh, defpix_vh = histcomp("Kiuic", dir, "_buffered_", "VH")
+	forpix_vv, defpix_vv = histcomp("Kiuic", dir, "_buffered_", "", "VV")
+	make_hist(forpix_vh, defpix_vh, trend_15)
+	savefig("figures/Histogram_Kiuic_trend15_vh.png")
+	make_hist(forpix_vh, defpix_vh, nanpercrange)
+	savefig("figures/Histogram_Kiuic_prange_vh.png")
+	make_hist(forpix_vv, defpix_vv, trend_15)
+	savefig("figures/Histogram_Kiuic_trend15_vv.png")
+	make_hist(forpix_vv, defpix_vv, nanpercrange)
+	savefig("figures/Histogram_Kiuic_prange_vv.png")
+	# Now we are doing the same for the filtered nodata
+	println("Start with filtered data")
+	forpix_vh, defpix_vh = histcomp("Kiuic", dir, "_buffered_", "emd__", "VH")
+	forpix_vv, defpix_vv = histcomp("Kiuic", dir, "_buffered_", "emd__", "VV")
+	make_hist(forpix_vh, defpix_vh, trend_15)
+	savefig("figures/Histogram_Kiuic_trend15_vh_emd.png")
+	make_hist(forpix_vh, defpix_vh, nanpercrange)
+	savefig("figures/Histogram_Kiuic_prange_vh_emd.png")
+	make_hist(forpix_vv, defpix_vv, trend_15)
+	savefig("figures/Histogram_Kiuic_trend15_vv_emd.png")
+	make_hist(forpix_vv, defpix_vv, nanpercrange)
+	savefig("figures/Histogram_Kiuic_prange_vv_emd.png")
 end
