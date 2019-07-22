@@ -11,3 +11,4 @@
 *.ipynb_checkpoints/
 rqa_paper_julia/Manifest.toml
 
+data/*
