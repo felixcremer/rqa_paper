@@ -131,15 +131,16 @@ It is a linear regression coefficient over the recurrence rate of the diagonals 
 It indicates if the process is drifting.
 For an overview of RQA measures see  Table \ref{RQA_table} and for an in depth discussion \cite{Marwan06}.
 All of the results have been produced using the Julia RecurrenceAnalysis.jl package\cite{RQA.jl}.
-%\begin{landscape}
+
+\begin{landscape}
 \renewcommand{\arraystretch}{2}
 \begin{table}[]
 \begin{tabular}{@{}lcc@{}}
 \toprule
  Name & Formula & Interpretation \\
  \midrule
- Recurrence Rate & $ RR= \frac{\sum\limits_{i,j=1}^N(R_{i,j})}{N^2} $ &  \\
- Determinism & $DET=\frac{\sum\limits_{l=lmin}^N(l P(l))}{\sum_{l=1}(l P(l))} $ &  \\
+ Recurrence Rate & $ RR= \frac{\sum\limits_{i,j=1}^N(R_{i,j})}{N^2} $ & Probability that a state of the system recurs.  \\
+ Determinism & $DET=\frac{\sum\limits_{l=lmin}^N(l P(l))}{\sum_{l=1}(l P(l))} $ & Measures the predictability of the signal.   \\
  Average Length of Diagonal Structues & $dlavg=\frac{\sum_{l=lmin}(l P(l))}{\sum_{l=lmin}^{N}(P(l))}$  &  \\
  Maximum Length of Diagonal Structures & $L_{max}=\max(l_i)$ &  \\
  Divergence & $DIV=\frac{1}{L_{max}}$ &  \\
@@ -156,7 +157,7 @@ All of the results have been produced using the Julia RecurrenceAnalysis.jl pack
 \caption{Overview of Recurrence Quantification measures.}
 \label{RQA_table}
 \end{table}
-%\end{landscape}
+\end{landscape}
 
 \section{Experimental Results}
 \subsection{Data and Preprocessing}
@@ -177,7 +178,11 @@ The orthorectification is based on the original orbit state vectors and the \SI{
 The preprocessing also included radiometric terrain flattening after \cite{Small} which results in $\gamma^0$ backscatter values.
 All images were coregistered in the DEM geometry after geocoding to achieve a subpixel coregistration precision which is of eminent importance when the pixels are investigated in the temporal domain only.
 
-
+We have reduced the speckle noise and other unwanted short-term perturbations of the data using the filter described in \cite{Cremer2018}.
+The filter is based on the Empirical Mode Decomposition a data adaptive alternative to the fourier transformation which can handle non-stationary data.
+Each pixel is separately decomposed into intrinsic mode functions (IMFs) of different temporal frequencies.
+In order to reduce the speckle, the two IMFs with the highest temporal frequencies are removed.
+This results in a nonparametric image transform that fully preserves the geometric resolution and has a similar speckle suppression than the Quegan 5x5 filter \cite{Quegan_2001}.
 
 
 \subsection{Separability analysis}
@@ -186,6 +191,9 @@ Figure \ref{rpforest} shows the recurrence plots of a neighbourhood of examplary
 The upper figures shows the time series of a 7x7 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
 The bottom figures show the grayscale of the corresponding recurrence plots.
 Black points are similar in every pixel of the neighborhood and white points in none.
+There is a clear drop in the backscatter time series of the deforested area, but then the signal is going up to a similar level than before the deforestation.
+In the Recurrence Plot this change is visible as large white areas in the corners of the recurrence plots similar to the second example in Figure \ref{rplots}.
+In the forest, the signal is stable which is visible in the recurrence plot as a white noise, because of the small differences in the backscatter in every time step.
 
 
 \begin{figure}
@@ -195,26 +203,45 @@ Black points are similar in every pixel of the neighborhood and white points in 
   \label{rpforest}
 \end{figure}
 
-Figure \ref{trend} shows the RQA TREND statistic from two year VH data from march 2017 till march 2019.
+Figure \ref{trend} shows the RQA TREND statistic from two year VH data from march 2017 till march 2019 in comparison to the range between the multitemporal 5th to 95th percentile (prange).
 For this time frame are 187 time steps available.
-The red polygons are deforestations which happened between october 2017 and july 2018 and the green are stable forest areas.
-Most of the deforested areas are clearly distinguishable as a distinct black area compared to the surrounding grey.
-The not detected deforestation areas are too late in the sensing period.
-So that the backscatter change due to the deforestation did not have a long enough effect on the TREND statistic.
-
+The red polygons are deforestations which happened between september 2016 and october 2017 and the violet ones deforestations between October 2017 and July 2018.
+The later deforestations which are fully in our sensing period are distinctly visible as clear black areas in the RQA TREND metric.
+The EMD filter reduces the pixel inside the deforestation areas which are having a low RQA TREND metric especially in the left polygon in VV data. .
+In the prange metric from the original data is no clear difference visible between the deforested areas and the surrounding stable forest areas.
+Applying the EMD filter makes the deforestations visible.
+The earlier deforestations are also partly visible, because the deforestations happened in the beginning of the sensing period.
+Therefore the 95th percentile by the still standing forest and the 5th percentile is dominated by the already deforested signal.
+The prange metric gains especially from the temporal denoising by the EMD filter.
+Overall, the cross-pol data better suited to map deforestations than co-pol data.
 
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{figs/TREND_Hidalgo_2016.png}
+  \includegraphics[width=\textwidth]{figs/rqa_trend_0317_0319.png}
   \caption{RQA TREND statistic.  The red polygons are deforestations between October 2017 and July 2018 and the green polygons are stable forest areas.
   These polygons have been select from VHR Pleiades data.}
   \label{trend}
 \end{figure}
 
 
-Figure \ref{hist} shows the histograms for the RQA trend metric and the percentile range for the deforestation areas in red and the stable forest areas in green.
+Figure \ref{histtrend} shows the histograms for the RQA trend metric and figure \ref{histprange} the ones for the percentile range for the deforestation areas in red and the stable forest areas in green.
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/histogram_trend1_5_0317_0319_polygon_5.png}
+  \caption{Histogram of the RQA Trend metrics for a deforestation(red) and a stable forest area (green) of similar size.}
+  \label{histtrend}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/histogram_percrange_0317_0319_polygon_5.png}
+  \caption{Histogram of the prange for deforestation(red) and stable forest areas (green) of similar size.}
+  \label{histprange}
+\end{figure}
+
+Check wether the histograms are VH or VV I suppose, they are VH
 
 Show that the TREND metric is enhancing the separability of deforested areas and stable forests.
+
 Quantify it.
 
 
@@ -222,14 +249,16 @@ Is there a recommendation, which threshold we should use for the percentile rang
 
 \section{Discussion}
 
-Do I need to do a comparison against optical deforestation maps?
-Will do a comparison against the percentile range.
+discuss the differences between EMD filtered and original data
 
-Should I show the deforested area in the testsite figure?
-Yes please. If I am showing the testsite figure at all.
+difference between prange and rqa trend
+
+
 \section{Summary and Conclusion}
-In this paper we showed, that the use of the inherent order of a time series conveys information,
-which can be used to better map deforestation.
+In this work, we showed, that the RQA TREND metric is a good indicator for deforestations.
+We compared the RQA TREND to the range between the 5th and the 95th multitemporal percentile.
+Because the RQA TREND is also using the order of the time series to derive information about the underlying land cover,
+it gives a clearer picture about deforestations.
 
 
 
