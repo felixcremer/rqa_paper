@@ -35,7 +35,7 @@ function plot_ts_rp_methods()
     imshow(grayscale(rp2), cmap="binary_r")
     subplot2grid((3,3), (1,2), rowspan=2)
     imshow(grayscale(rp3), cmap="binary_r")
-    savefig("latex/figs/rp_methods.png")
+    savefig("latex/figs/rp_methods.svg")
 end
 
 include("raster_utils.jl")
