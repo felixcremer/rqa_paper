@@ -23,6 +23,7 @@
 
 \usepackage{booktabs}
 \usepackage{lscape}
+\usepackage{svg}
 
 % *** MATH PACKAGES ***
 %
@@ -89,6 +90,15 @@ the optical imaging is hindered by clouds. In this study we
  propose a deforestation mapping approach based on SAR time
 series.
 
+Established method to map forest cover change from optical images using Landsat \cite{Hansen}
+Optical satellite data acquisitions is hindered by clouds, which is especially problematic in the tropics.
+Therefore there has been some research going into the mapping of forest cover change using synthetic aperture radar data.
+The detection of deforestation is better with the use of L-Band data, because the higher wavelengths better distinguishes between the forest cover and bare soil.
+Unfortunately, there are no global L-Band products freely available.
+For C-Band, there is a global dataset with a high temporal repetition available thanks to the european Sentinel-1 mission.
+The separabiltiy between the forest cover and the bare soil in C-Band data can be enhanced by the use of the full time series.
+
+
 Misses overview about established methods.
 Especially the percentile range
 
@@ -135,24 +145,27 @@ All of the results have been produced using the Julia RecurrenceAnalysis.jl pack
 \begin{landscape}
 \renewcommand{\arraystretch}{2}
 \begin{table}[]
-\begin{tabular}{@{}lcc@{}}
+\centering
+\begin{tabular}{p{4cm}cp{12cm}}
 \toprule
  Name & Formula & Interpretation \\
  \midrule
- Recurrence Rate & $ RR= \frac{\sum\limits_{i,j=1}^N(R_{i,j})}{N^2} $ & Probability that a state of the system recurs.  \\
- Determinism & $DET=\frac{\sum\limits_{l=lmin}^N(l P(l))}{\sum_{l=1}(l P(l))} $ & Measures the predictability of the signal.   \\
- Average Length of Diagonal Structues & $dlavg=\frac{\sum_{l=lmin}(l P(l))}{\sum_{l=lmin}^{N}(P(l))}$  &  \\
- Maximum Length of Diagonal Structures & $L_{max}=\max(l_i)$ &  \\
- Divergence & $DIV=\frac{1}{L_{max}}$ &  \\
- Entropy of diagonal structures & $ENTR=\sum\limits_{i=1}^N P(l_i) * log(P(l_i))$ &  \\
- Trend & $ TREND=\frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}$ &  \\
- Laminarity & $LAM=\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=1}^{N}(v P(v))}$ &  \\
- Trapping time & $TT=\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=vmin}^{N}(P(v))}$ &  \\
- Maximum Length of vertical structures & $V_{max}=\max\limits_{i=1, ..., N}(v_i)$ &  \\
- Entropy of vertical structures& $VENTR=\sum\limits_{i=1}^N P(v_i) * log(P(v_i))$ &  \\
- Mean recurrence time & $MRT=\frac{\sum\limits_{i=1}^N(w_i P(w_i))}{\sum_{1}^{N}(P(w_i))}$  &  \\
- Recurrence time entropy & $RTE =\sum\limits_{i=1}^N P(w_i) * log(P(w_i))$  & \\
- Number of the most probable recurrence times & $NMPRT=\max w_i$ & \\ \bottomrule
+ Recurrence Rate & $\frac{\sum\limits_{i,j=1}^N(R_{i,j})}{N^2} $ & Probability that a state of the system recurs.  \\
+ Determinism & $\frac{\sum\limits_{l=lmin}^N(l P(l))}{\sum_{l=1}(l P(l))} $ & Measures the predictability of the signal.   \\
+ Average Length \newline of Diagonal Structues & $\frac{\sum_{l=lmin}(l P(l))}{\sum_{l=lmin}^{N}(P(l))}$  &  \\
+ Maximum Length \newline of Diagonal Structures & $\max(l_i)$ &  \\
+ Divergence & $\frac{1}{\max(l_i)}$ &  \\
+ Entropy of diagonal structures & $\sum\limits_{i=1}^N P(l_i) * log(P(l_i))$ & Indicates the complexity of the diagonal line structure of the RP, small for uncorrelated noise  \\
+ Trend & $ \frac{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)(RR_\tau - \langle RR_\tau \rangle)}{\sum_{\tau=1}^{\tilde{N}}(\tau - \tilde{N}/2)}$ &
+  Linear regression between the recurrences on a diagonal and the distance to the main diagonal. Normal distributed around zero.
+   Low values indicate, that time steps that are further apart are more seldom similar \\
+ Laminarity & $\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=1}^{N}(v P(v))}$ &  \\
+ Trapping time & $\frac{\sum_{v=vmin}(v P(v))}{\sum_{v=vmin}^{N}(P(v))}$ &  \\
+ Maximum Length of vertical structures & $\max\limits_{i=1, ..., N}(v_i)$ &  \\
+ Entropy of vertical structures& $\sum\limits_{i=1}^N P(v_i) * log(P(v_i))$ &  \\
+ Mean recurrence time & $\frac{\sum\limits_{i=1}^N(w_i P(w_i))}{\sum_{1}^{N}(P(w_i))}$  &  \\
+ Recurrence time entropy & $\sum\limits_{i=1}^N P(w_i) * log(P(w_i))$  & \\
+ Number of the most probable recurrence times & $\max w_i$ & \\ \bottomrule
 \end{tabular}
 \caption{Overview of Recurrence Quantification measures.}
 \label{RQA_table}
@@ -177,6 +190,7 @@ The single time steps are multilooked to a \SI{10}{\m} x \SI{10}{\m} pixel spaci
 The orthorectification is based on the original orbit state vectors and the \SI{30}{\m} SRTM digital elevation model\cite{SRTM}.
 The preprocessing also included radiometric terrain flattening after \cite{Small} which results in $\gamma^0$ backscatter values.
 All images were coregistered in the DEM geometry after geocoding to achieve a subpixel coregistration precision which is of eminent importance when the pixels are investigated in the temporal domain only.
+We used the python package pyroSAR \cite{pyroSAR} to handle the preprocessing.
 
 We have reduced the speckle noise and other unwanted short-term perturbations of the data using the filter described in \cite{Cremer2018}.
 The filter is based on the Empirical Mode Decomposition a data adaptive alternative to the fourier transformation which can handle non-stationary data.
@@ -188,17 +202,16 @@ This results in a nonparametric image transform that fully preserves the geometr
 \subsection{Separability analysis}
 
 Figure \ref{rpforest} shows the recurrence plots of a neighbourhood of examplary forest and deforestation areas.
-The upper figures shows the time series of a 7x7 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
+The upper figures shows the cross-pol time series of a 7x7 matrix of a deforested area (left) and a stable forest (right) with the mean of these pixels in red respectively green.
 The bottom figures show the grayscale of the corresponding recurrence plots.
 Black points are similar in every pixel of the neighborhood and white points in none.
 There is a clear drop in the backscatter time series of the deforested area, but then the signal is going up to a similar level than before the deforestation.
 In the Recurrence Plot this change is visible as large white areas in the corners of the recurrence plots similar to the second example in Figure \ref{rplots}.
-In the forest, the signal is stable which is visible in the recurrence plot as a white noise, because of the small differences in the backscatter in every time step.
-
+In the forest, the signal is stable with small backscatter differences between every time step. This is visible in the recurrence plot as a white noise.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{figs/S1_Hidalgo_timestack_20km_VH___lin_20_test_tandemdem12_emd__rp_deffor_3.png}
-  \caption{Recurrence Plots for a 3x3 matrix of deforestated(left) and stable forest(right) pixels.
+  \caption{Recurrence Plots for a 7x7 matrix of deforestated(left) and stable forest(right) pixels.
            The gray lines in the above figure are all pixels and the colored line is the mean of these pixels.}
   \label{rpforest}
 \end{figure}
@@ -207,13 +220,14 @@ Figure \ref{trend} shows the RQA TREND statistic from two year VH data from marc
 For this time frame are 187 time steps available.
 The red polygons are deforestations which happened between september 2016 and october 2017 and the violet ones deforestations between October 2017 and July 2018.
 The later deforestations which are fully in our sensing period are distinctly visible as clear black areas in the RQA TREND metric.
-The EMD filter reduces the pixel inside the deforestation areas which are having a low RQA TREND metric especially in the left polygon in VV data. .
+The EMD filter reduces the pixel inside the deforestation areas which are having a low RQA TREND metric especially in the left polygon in VV data.
 In the prange metric from the original data is no clear difference visible between the deforested areas and the surrounding stable forest areas.
 Applying the EMD filter makes the deforestations visible.
 The earlier deforestations are also partly visible, because the deforestations happened in the beginning of the sensing period.
-Therefore the 95th percentile by the still standing forest and the 5th percentile is dominated by the already deforested signal.
+Therefore the 95th percentile is from the still standing forest and the 5th percentile is dominated by the already deforested signal.
 The prange metric gains especially from the temporal denoising by the EMD filter.
-Overall, the cross-pol data better suited to map deforestations than co-pol data.
+Overall is the cross-pol data better suited to map deforestations than co-pol data.
+Therefore, we are only showing the cross-pol results hereafter.
 
 
 \begin{figure}
@@ -223,6 +237,24 @@ Overall, the cross-pol data better suited to map deforestations than co-pol data
   \label{trend}
 \end{figure}
 
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/comp_vh_a_d_def.pdf}
+  \caption{Recurrence Plots for a 7x7 matrix of deforested pixels in ascending(left) and descending(right) orbit.
+           The gray lines in the above figure are all pixels and the colored line is the mean of these pixels.}
+  \label{rpdef_a_d}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/vh_a_d_timeseries.pdf}
+  \caption{Time series of the cross-pol data for the ascending and descending stack.
+            }
+  \label{ts_a_d}
+\end{figure}
+
+
+
+\subsection{Histogram analysis}
 
 Figure \ref{histtrend} shows the histograms for the RQA trend metric and figure \ref{histprange} the ones for the percentile range for the deforestation areas in red and the stable forest areas in green.
 
@@ -251,7 +283,12 @@ Is there a recommendation, which threshold we should use for the percentile rang
 
 discuss the differences between EMD filtered and original data
 
+discuss the differences between asc and desc
+Remarks about the water content.
+
+
 difference between prange and rqa trend
+
 
 
 \section{Summary and Conclusion}
