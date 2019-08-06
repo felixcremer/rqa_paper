@@ -90,7 +90,7 @@ the optical imaging is hindered by clouds. In this study we
  propose a deforestation mapping approach based on SAR time
 series.
 
-Established method to map forest cover change from optical images using Landsat \cite{Hansen}
+Established method to map forest cover change from optical images using Landsat \cite{Hansen}.
 Optical satellite data acquisitions is hindered by clouds, which is especially problematic in the tropics.
 Therefore there has been some research going into the mapping of forest cover change using synthetic aperture radar data.
 The detection of deforestation is better with the use of L-Band data, because the higher wavelengths better distinguishes between the forest cover and bare soil.
@@ -146,7 +146,7 @@ All of the results have been produced using the Julia RecurrenceAnalysis.jl pack
 \renewcommand{\arraystretch}{2}
 \begin{table}[]
 \centering
-\begin{tabular}{p{4cm}cp{12cm}}
+\begin{tabular}{p{3cm}p{4cm}p{14cm}}
 \toprule
  Name & Formula & Interpretation \\
  \midrule
@@ -245,9 +245,19 @@ Therefore, we are only showing the cross-pol results hereafter.
   \label{rpdef_a_d}
 \end{figure}
 
-Figure \ref{ts_a_d} shows the VH time series of a 7x7 matrix of deforestation pixels in the ascending and descending orbit.
-Figure \ref{rpdef} shows the time series with the corresponding recurrence plots.
-The ascending time series has a
+Figure \ref{ts_a_d} shows the VH time series of a 7x7 matrix of deforested pixels in the ascending and descending orbit.
+Figure \ref{rpdef_a_d} shows these time series with the corresponding recurrence plots.
+The ascending time series have a little bit higher values while it is still forested
+and have a little bit lower values after the deforestation.
+Since the threshold for similarity in the recurrence plots is 1.5 dB,
+there are more timesteps in the descending orbit, which are classified as similar.
+Therefore, are the recurrence plots from the ascending orbit showing a clearer distinguishable whitespace at the time of the deforestation.
+The differences between the number of time steps before the deforestation is due to a lack of data in the ascending orbit from september 2017 to january 2018.
+This does not have an effect on the computation of the rqa trend metric.
+The differences in the recurrence plots have also an impact on the rqa trend metric as we can see in figure \ref{comp_vh_a_d}.
+
+
+
 
 \begin{figure}
   \includegraphics[width=\textwidth]{figs/vh_a_d_timeseries.pdf}
@@ -257,7 +267,11 @@ The ascending time series has a
   \label{ts_a_d}
 \end{figure}
 
-
+\begin{figure}
+  \includegraphics[width=\textwidth]{figs/rqa_trend_vh_a_d_comp.pdf}
+  \caption{Comparison of the RQA trend metric and the percentile range for the cross-pol time series in the ascending and descending orbit.The ascending orbit is better suited to map deforestations.}
+  \label{comp_vh_a_d}
+\end{figure}
 
 \subsection{Histogram analysis}
 
@@ -290,6 +304,7 @@ Is there a recommendation, which threshold we should use for the percentile rang
 discuss the differences between EMD filtered and original data
 
 discuss the differences between asc and desc
+
 Remarks about the water content.
 
 
@@ -311,7 +326,7 @@ the DFG project HyperSense.
 This work uses Copernicus Sentinel data 2017-2019.
 
 
-
+\bibliographystyle{ieeetr}
 \bibliography{literatur}
 
 \end{document}
